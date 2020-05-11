@@ -8,6 +8,8 @@ admin.initializeApp({
     databaseURL: "https://firestore-grafica-59a2d.firebaseio.com"
 });
 
+const db = admin.firestore();
+
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -16,3 +18,16 @@ export const helloWorld = functions.https.onRequest((request, response) => {
      mensaje: "Hello from Firebase Functions!"
     });
 });
+
+
+export const getGOTY = functions.https.onRequest( async(request, response) => {
+    // const nombre = request.query.nombre || 'Sin nombre'; 
+    
+    const gotyRef = db.collection('goty');
+    const docsSnap = await gotyRef.get();
+    const juegos = docsSnap.docs.map( doc => doc.data() );
+
+    response.json( juegos );
+
+});
+   
